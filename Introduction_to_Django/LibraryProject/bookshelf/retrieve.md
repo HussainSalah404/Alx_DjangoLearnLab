@@ -4,7 +4,7 @@
 
 **Command:**
 ```python
-from book_store.models import Book
+from bookshelf.models import Book
 book = Book.objects.get(title="1984")
 print(book.id, book.title, book.author, book.published_date)
 Expected Output:
