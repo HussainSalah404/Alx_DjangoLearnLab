@@ -1,0 +1,4 @@
+
+
+
+books = Book.objects.all()
