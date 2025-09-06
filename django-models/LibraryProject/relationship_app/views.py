@@ -5,10 +5,10 @@ from .models import Library, Book
 def index(request):
     return HttpResponse("Welcome to my book shelf.")
 
-def book_list(request):
+def list_books(request):
     """Retrieves all books and renders a template displaying the list."""
     books = Book.objects.all()  # Fetch all book instances from the database
-    context = {'book_list': books}  # Create a context dictionary with book list
+    context = {'list_books': books}  # Create a context dictionary with book list
     return render(request, 'relationship_app/list_books.html', context)
 
 class LibraryDetailView(DetailView):
