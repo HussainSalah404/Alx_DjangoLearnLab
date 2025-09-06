@@ -1,4 +1,4 @@
-from django.views.generic import DetailView
+from django.views.generic.detail import DetailView
 from django.shortcuts import render, HttpResponse
 from .models import Library, Book
 # Create your views here.
