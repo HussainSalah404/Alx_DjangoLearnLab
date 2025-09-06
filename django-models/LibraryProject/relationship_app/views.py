@@ -1,7 +1,6 @@
 from django.views.generic import DetailView
 from django.shortcuts import render, HttpResponse
-from relationship_app.models import Book
-from .models import Library
+from .models import Library, Book
 # Create your views here.
 def index(request):
     return HttpResponse("Welcome to my book shelf.")
