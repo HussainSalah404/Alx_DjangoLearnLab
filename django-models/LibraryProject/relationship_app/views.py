@@ -6,9 +6,10 @@ from django.contrib.auth.decorators import user_passes_test, permission_required
 from django.http import HttpResponse
 from .models import Library, Book
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.views.generic import CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, UpdateView
 from django.contrib.auth import login
 from .models import Book
+from django.views.generic.detail import DetailView
 
 # --- General Views ---
 def index(request):
