@@ -2,10 +2,11 @@ from django.views.generic import DetailView, CreateView
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import user_passes_test, permission_required
 from django.http import HttpResponse
 from .models import Library, Book
-
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.views.generic import CreateView, UpdateView, DeleteView
 
 # --- General Views ---
 def index(request):
@@ -82,3 +83,26 @@ def role_based_redirect(request):
         elif role == "Member":
             return redirect("member_view")
     return redirect("index")
+
+# View to add a book
+class BookCreateView(PermissionRequiredMixin, CreateView):
+    model = Book
+    fields = ['title', 'author']
+    template_name = 'relationship_app/book_form.html'
+    success_url = reverse_lazy('book-list')
+    permission_required = 'relationship_app.can_add_book'
+
+# View to edit a book
+class BookUpdateView(PermissionRequiredMixin, UpdateView):
+    model = Book
+    fields = ['title', 'author']
+    template_name = 'relationship_app/book_form.html'
+    success_url = reverse_lazy('book-list')
+    permission_required = 'relationship_app.can_change_book'
+
+# View to delete a book
+class BookDeleteView(PermissionRequiredMixin, DeleteView):
+    model = Book
+    template_name = 'relationship_app/book_confirm_delete.html'
+    success_url = reverse_lazy('book-list')
+    permission_required = 'relationship_app.can_delete_book'
