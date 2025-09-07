@@ -3,15 +3,14 @@ from django.views.generic import CreateView
 from .models import Library, Book
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth import login
 from django.contrib.auth.decorators import user_passes_test
 
 # Create your views here.
 
 def index(request):
-    # A simple welcome page for your app
-    return HttpResponse("Welcome to my book shelf.")
+    return render(request, "relationship_app/index.html")
 
 def list_books(request):
     """Retrieves all books and renders a template displaying the list."""
@@ -40,3 +39,15 @@ class register(CreateView):
         # using UserCreationForm() here so the checker finds it
         form = UserCreationForm()
         return form.__class__
+    
+
+def role_based_redirect(request):
+    if request.user.is_authenticated:
+        role = request.user.userprofile.role
+        if role == "Admin":
+            return redirect("admin_dashboard")
+        elif role == "Librarian":
+            return redirect("librarian_dashboard")
+        elif role == "Member":
+            return redirect("member_dashboard")
+    return redirect("index")
