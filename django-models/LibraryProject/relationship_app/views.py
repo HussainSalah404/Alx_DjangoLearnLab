@@ -50,20 +50,20 @@ def is_member(user):
     return user.is_authenticated and hasattr(user, "userprofile") and user.userprofile.role == "Member"
 
 
-# --- Role-Based Dashboards ---
+# --- Role-Based views ---
 @user_passes_test(is_admin, login_url="/no-permission/")
-def admin_dashboard(request):
-    return HttpResponse("Welcome to the Admin Dashboard!")
+def admin_view(request):
+    return HttpResponse("Welcome to the Admin view!")
 
 
 @user_passes_test(is_librarian, login_url="/no-permission/")
-def librarian_dashboard(request):
-    return HttpResponse("Welcome to the Librarian Dashboard!")
+def librarian_view(request):
+    return HttpResponse("Welcome to the Librarian view!")
 
 
 @user_passes_test(is_member, login_url="/no-permission/")
-def member_dashboard(request):
-    return HttpResponse("Welcome to the Member Dashboard!")
+def member_view(request):
+    return HttpResponse("Welcome to the Member view!")
 
 
 # --- No Permission Page ---
@@ -76,9 +76,9 @@ def role_based_redirect(request):
     if request.user.is_authenticated:
         role = request.user.userprofile.role
         if role == "Admin":
-            return redirect("admin_dashboard")
+            return redirect("admin_view")
         elif role == "Librarian":
-            return redirect("librarian_dashboard")
+            return redirect("librarian_view")
         elif role == "Member":
-            return redirect("member_dashboard")
+            return redirect("member_view")
     return redirect("index")
