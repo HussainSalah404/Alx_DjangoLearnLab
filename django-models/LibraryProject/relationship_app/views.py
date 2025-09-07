@@ -8,6 +8,9 @@ from .models import Library, Book
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic import CreateView, UpdateView, DeleteView
 
+from django.contrib.auth.decorators import permission_required
+from .models import Book
+
 # --- General Views ---
 def index(request):
     return render(request, "relationship_app/index.html")
