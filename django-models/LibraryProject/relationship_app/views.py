@@ -5,6 +5,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.shortcuts import render, HttpResponse
 from django.contrib.auth import login
+from django.contrib.auth.decorators import user_passes_test
+
 # Create your views here.
 
 def index(request):
@@ -39,3 +41,28 @@ class register(CreateView):
         form = UserCreationForm()
         return form.__class__
     
+# -------- Admin View --------
+def is_admin(user):
+    return hasattr(user, "userprofile") and user.userprofile.role == "Admin"
+
+@user_passes_test(is_admin)
+def admin_dashboard(request):
+    return render(request, "relationship_app/admin_dashboard.html")
+
+
+# -------- Librarian View --------
+def is_librarian(user):
+    return hasattr(user, "userprofile") and user.userprofile.role == "Librarian"
+
+@user_passes_test(is_librarian)
+def librarian_dashboard(request):
+    return render(request, "relationship_app/librarian_dashboard.html")
+
+
+# -------- Member View --------
+def is_member(user):
+    return hasattr(user, "userprofile") and user.userprofile.role == "Member"
+
+@user_passes_test(is_member)
+def member_dashboard(request):
+    return render(request, "relationship_app/member_dashboard.html")
