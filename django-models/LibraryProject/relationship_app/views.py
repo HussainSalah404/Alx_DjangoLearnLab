@@ -11,6 +11,7 @@ from django.contrib.auth import login
 from .models import Book
 from django.views.generic.detail import DetailView
 from django.contrib.auth.decorators import permission_required
+from django.views.generic import DeleteView
 
 # --- General Views ---
 def index(request):
