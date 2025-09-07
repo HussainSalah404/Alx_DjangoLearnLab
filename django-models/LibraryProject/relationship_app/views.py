@@ -53,17 +53,17 @@ def is_member(user):
 # --- Role-Based views ---
 @user_passes_test(is_admin, login_url="/no-permission/")
 def admin_view(request):
-    return HttpResponse("Welcome to the Admin view!")
+    return render(request, "relationship_app/admin_view.html")
 
 
 @user_passes_test(is_librarian, login_url="/no-permission/")
 def librarian_view(request):
-    return HttpResponse("Welcome to the Librarian view!")
+    return render(request, "relationship_app/librarian_view.html")
 
 
 @user_passes_test(is_member, login_url="/no-permission/")
 def member_view(request):
-    return HttpResponse("Welcome to the Member view!")
+    return render(request, "relationship_app/member_view.html")
 
 
 # --- No Permission Page ---
