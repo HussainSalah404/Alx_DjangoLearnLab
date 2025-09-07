@@ -42,8 +42,8 @@ class register(CreateView):
         return form.__class__
     
 # --- Role check functions ---
-def is_admin(user):
-    return user.is_authenticated and hasattr(user, "userprofile") and user.userprofile.role == "Admin"
+#def is_admin(user):
+    #return user.is_authenticated and hasattr(user, "userprofile") and user.userprofile.role == "Admin"
 
 def is_librarian(user):
     return user.is_authenticated and hasattr(user, "userprofile") and user.userprofile.role == "Librarian"
@@ -52,9 +52,9 @@ def is_member(user):
     return user.is_authenticated and hasattr(user, "userprofile") and user.userprofile.role == "Member"
 
 # --- Role-based views ---
-@user_passes_test(is_admin)
-def admin_dashboard(request):
-    return HttpResponse("Welcome to the Admin Dashboard!")
+#@user_passes_test(is_admin)
+#def admin_dashboard(request):
+    #return HttpResponse("Welcome to the Admin Dashboard!")
 
 @user_passes_test(is_librarian)
 def librarian_dashboard(request):
@@ -63,6 +63,19 @@ def librarian_dashboard(request):
 @user_passes_test(is_member)
 def member_dashboard(request):
     return HttpResponse("Welcome to the Member Dashboard!")
+
+# --- Role check functions ---
+def is_admin(user):
+    return user.is_authenticated and hasattr(user, "userprofile") and user.userprofile.role == "Admin"
+
+# --- No Permission Page ---
+def no_permission(request):
+    return HttpResponse("Sorry, you don’t have permission to access this page.")
+
+# --- Admin Dashboard ---
+@user_passes_test(is_admin, login_url="/no-permission/")
+def admin_dashboard(request):
+    return HttpResponse("Welcome to the Admin Dashboard!")
 
 def role_based_redirect(request):
     if request.user.is_authenticated:
