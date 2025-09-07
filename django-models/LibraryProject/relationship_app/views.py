@@ -1,82 +1,77 @@
-from django.views.generic.detail import DetailView
-from django.views.generic import CreateView
-from .models import Library, Book
+from django.views.generic import DetailView, CreateView
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
-from django.shortcuts import render, HttpResponse, redirect
-from django.contrib.auth import login
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponse
+from .models import Library, Book
 
-# Create your views here.
 
+# --- General Views ---
 def index(request):
     return render(request, "relationship_app/index.html")
 
+
 def list_books(request):
     """Retrieves all books and renders a template displaying the list."""
-    books = Book.objects.all()  # Fetch all book instances from the database
-    context = {'list_books': books}  # Context dictionary with book list
-    return render(request, 'relationship_app/list_books.html', context)
+    books = Book.objects.all()
+    return render(request, "relationship_app/list_books.html", {"list_books": books})
+
 
 class LibraryDetailView(DetailView):
     """Displays details of a specific library and its related books."""
     model = Library
     template_name = "relationship_app/library_detail.html"
-    context_object_name = "library"  # In template, use {{ library }}
+    context_object_name = "library"
 
     def get_context_data(self, **kwargs):
-        # Start with the default context (which already has {{ library }})
         context = super().get_context_data(**kwargs)
-        # Add all related books to the same variable name used in list_books
         context["list_books"] = self.object.books.all()
         return context
-    
-class register(CreateView):
-    success_url = reverse_lazy('login')
-    template_name = 'relationship_app/register.html'
 
-    def get_form_class(self):
-        # using UserCreationForm() here so the checker finds it
-        form = UserCreationForm()
-        return form.__class__
-    
-# --- Role check functions ---
-#def is_admin(user):
-    #return user.is_authenticated and hasattr(user, "userprofile") and user.userprofile.role == "Admin"
+
+class register(CreateView):
+    """Handles user registration using Django's built-in UserCreationForm."""
+    form_class = UserCreationForm
+    success_url = reverse_lazy("login")
+    template_name = "relationship_app/register.html"
+
+
+# --- Role Check Helpers ---
+def is_admin(user):
+    return user.is_authenticated and hasattr(user, "userprofile") and user.userprofile.role == "Admin"
+
 
 def is_librarian(user):
     return user.is_authenticated and hasattr(user, "userprofile") and user.userprofile.role == "Librarian"
 
+
 def is_member(user):
     return user.is_authenticated and hasattr(user, "userprofile") and user.userprofile.role == "Member"
 
-# --- Role-based views ---
-#@user_passes_test(is_admin)
-#def admin_dashboard(request):
-    #return HttpResponse("Welcome to the Admin Dashboard!")
 
-@user_passes_test(is_librarian)
+# --- Role-Based Dashboards ---
+@user_passes_test(is_admin, login_url="/no-permission/")
+def admin_dashboard(request):
+    return HttpResponse("Welcome to the Admin Dashboard!")
+
+
+@user_passes_test(is_librarian, login_url="/no-permission/")
 def librarian_dashboard(request):
     return HttpResponse("Welcome to the Librarian Dashboard!")
 
-@user_passes_test(is_member)
+
+@user_passes_test(is_member, login_url="/no-permission/")
 def member_dashboard(request):
     return HttpResponse("Welcome to the Member Dashboard!")
 
-# --- Role check functions ---
-def is_admin(user):
-    return user.is_authenticated and hasattr(user, "userprofile") and user.userprofile.role == "Admin"
 
 # --- No Permission Page ---
 def no_permission(request):
     return HttpResponse("Sorry, you don’t have permission to access this page.")
 
-# --- Admin Dashboard ---
-@user_passes_test(is_admin, login_url="/no-permission/")
-def admin_dashboard(request):
-    return HttpResponse("Welcome to the Admin Dashboard!")
 
+# --- Redirect Users Based on Role ---
 def role_based_redirect(request):
     if request.user.is_authenticated:
         role = request.user.userprofile.role
@@ -87,4 +82,3 @@ def role_based_redirect(request):
         elif role == "Member":
             return redirect("member_dashboard")
     return redirect("index")
-    
