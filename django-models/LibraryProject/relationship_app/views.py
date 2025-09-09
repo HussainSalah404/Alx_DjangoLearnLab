@@ -2,7 +2,7 @@ from django.views.generic import DetailView, CreateView
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import user_passes_test, permission_required
+from django.contrib.auth.decorators import user_passes_test#, permission_required
 from django.http import HttpResponse
 from .models import Library, Book
 from django.contrib.auth.mixins import PermissionRequiredMixin
@@ -10,7 +10,7 @@ from django.views.generic import CreateView, UpdateView
 from django.contrib.auth import login
 from .models import Book
 from django.views.generic.detail import DetailView
-from django.contrib.auth.decorators import permission_required
+#from django.contrib.auth.decorators import permission_required
 from django.views.generic import DeleteView
 
 # --- General Views ---
