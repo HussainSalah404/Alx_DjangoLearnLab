@@ -7,4 +7,4 @@ class BookAdmin(admin.ModelAdmin):
     list_filter = ('title', 'author', 'published_date')
     publication_year = ('published_date')
 
-admin.site.register(Book, BookAdmin, CustomUser)
+admin.site.register(Book, BookAdmin, CustomUser, CustomUserAdmin)
