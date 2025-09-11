@@ -8,11 +8,14 @@ from .models import Library, Book
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic import CreateView, UpdateView
 from django.contrib.auth import login
-from .models import Book
+from .models import Book, UserProfile
 from django.views.generic.detail import DetailView
 from django.contrib.auth.decorators import permission_required
 from django.views.generic import DeleteView
-
+from django import forms
+from bookshelf.models import CustomUser
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 # --- General Views ---
 def index(request):
     return render(request, "relationship_app/index.html")
@@ -35,10 +38,13 @@ class LibraryDetailView(DetailView):
         context["list_books"] = self.object.books.all()
         return context
 
-
+class CustomUserCreationForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = CustomUser
+        fields = ("username", "email", "date_of_birth")
 class register(CreateView):
     """Handles user registration using Django's built-in UserCreationForm."""
-    form_class = UserCreationForm()
+    form_class = CustomUserCreationForm
     success_url = reverse_lazy("login")
     template_name = "relationship_app/register.html"
 
@@ -111,3 +117,12 @@ class BookDeleteView(PermissionRequiredMixin, DeleteView):
     template_name = 'relationship_app/book_confirm_delete.html'
     success_url = reverse_lazy('book-list')
     permission_required = 'relationship_app.can_delete_book'
+
+@receiver(post_save, sender=CustomUser)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
+
+@receiver(post_save, sender=CustomUser)
+def save_user_profile(sender, instance, **kwargs):
+    instance.userprofile.save()

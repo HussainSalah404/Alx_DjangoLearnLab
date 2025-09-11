@@ -54,3 +54,13 @@ class CustomUser(AbstractUser):
     
     def __str__(self):
         return self.username
+    
+class CustomPermissions(models.Model):  
+    name = models.CharField(max_length=100)
+    class Meta:
+        permissions = [
+                ("can_view", "Can view"),
+                ("can_create", "Can create"),
+                ("can_edit", "Can edit"),
+                ("can_delete", "Can Delete")
+            ]
