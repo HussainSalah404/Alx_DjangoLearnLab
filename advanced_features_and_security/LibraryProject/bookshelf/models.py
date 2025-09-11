@@ -64,3 +64,4 @@ class CustomPermissions(models.Model):
                 ("can_edit", "Can edit"),
                 ("can_delete", "Can Delete")
             ]
+
