@@ -54,9 +54,10 @@ SECURE_HSTS_SECONDS = 31536000
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True  
 
 # Allow this site to be included in browser preload lists for stricter HTTPS enforcement.
-SECURE_HSTS_PRELOAD = True  
+SECURE_HSTS_PRELOAD = True
 
-
+# Tell Django it’s safe to trust the X-Forwarded-Proto header set by the proxy
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Application definition
 
