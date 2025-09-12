@@ -30,11 +30,16 @@ ALLOWED_HOSTS = [
     "localhost",      # also allow localhost
     ] 
 
-# Security settings
+# Prevent XSS attacks by enabling the browser’s XSS filter
 SECURE_BROWSER_XSS_FILTER = True
+
+# Prevent the site from being displayed in an iframe (Clickjacking protection)
 X_FRAME_OPTIONS = "DENY"
+
+# Prevent MIME-type sniffing
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
+# Ensure cookies are only sent over HTTPS
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 

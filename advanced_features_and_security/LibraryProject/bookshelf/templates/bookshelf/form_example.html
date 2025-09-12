@@ -10,7 +10,7 @@
     <h1>Example Form</h1>
 
     <form method="post">
-        {% csrf_token %}
+        {% csrf_token %} <!-- CSRF protection to prevent cross-site request forgery -->
         {{ form.as_p }}
         <button type="submit">Submit</button>
     </form>
