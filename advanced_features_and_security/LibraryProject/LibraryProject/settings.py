@@ -43,6 +43,19 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
+# Redirect all non-HTTPS requests to HTTPS for secure communication.
+SECURE_SSL_REDIRECT = True  
+
+# Enforce HTTP Strict Transport Security (HSTS) for one year (31536000 seconds).
+# This ensures browsers only connect via HTTPS during this period.
+SECURE_HSTS_SECONDS = 31536000  
+
+# Extend HSTS policy to include all subdomains.
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  
+
+# Allow this site to be included in browser preload lists for stricter HTTPS enforcement.
+SECURE_HSTS_PRELOAD = True  
+
 
 
 # Application definition
