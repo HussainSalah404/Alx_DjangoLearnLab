@@ -39,25 +39,24 @@ X_FRAME_OPTIONS = "DENY"
 # Prevent MIME-type sniffing
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
-# Ensure cookies are only sent over HTTPS
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
-
-# Redirect all non-HTTPS requests to HTTPS for secure communication.
-SECURE_SSL_REDIRECT = True  
-
-# Enforce HTTP Strict Transport Security (HSTS) for one year (31536000 seconds).
-# This ensures browsers only connect via HTTPS during this period.
-SECURE_HSTS_SECONDS = 31536000  
-
-# Extend HSTS policy to include all subdomains.
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True  
-
-# Allow this site to be included in browser preload lists for stricter HTTPS enforcement.
-SECURE_HSTS_PRELOAD = True
-
 # Tell Django it’s safe to trust the X-Forwarded-Proto header set by the proxy
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Security settings: only enforce HTTPS in production
+if not DEBUG:
+    CSRF_COOKIE_SECURE = True               # Ensure cookies are only sent over HTTPS |
+    SESSION_COOKIE_SECURE = True            #                                        <-
+    SECURE_SSL_REDIRECT = True              # Redirect all non-HTTPS requests to HTTPS for secure communication.
+    SECURE_HSTS_SECONDS = 31536000          # Enforce HTTP Strict Transport Security (HSTS) for one year (31536000 seconds).
+                                            # This ensures browsers only connect via HTTPS during this period.
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True   # Extend HSTS policy to include all subdomains.
+    SECURE_HSTS_PRELOAD = True              # Allow this site to be included in browser preload lists for stricter HTTPS enforcement.
+else:
+    # Disable in local dev so http://127.0.0.1:8000 works
+    CSRF_COOKIE_SECURE = False
+    SESSION_COOKIE_SECURE = False
+    SECURE_SSL_REDIRECT = False
+    SECURE_HSTS_SECONDS = 0
 
 # Application definition
 
