@@ -68,13 +68,17 @@ INSTALLED_APPS = [
     "rest_framework.authtoken"     # token auth
 ]
 
+# --- Django REST Framework Settings ---
 REST_FRAMEWORK = {
+    # Authentication determines how users prove their identity when making API requests.
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',  # Token auth
-        'rest_framework.authentication.SessionAuthentication',  # optional
+        'rest_framework.authentication.TokenAuthentication',   # Token-based authentication (requires /auth/token/ endpoint)
+        'rest_framework.authentication.SessionAuthentication', # Session-based (useful for browsable API during dev)
     ],
+
+    # Permissions control what authenticated/unauthenticated users are allowed to do.
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',  # optional: force auth
+        'rest_framework.permissions.IsAuthenticated',          # By default, all API endpoints require login/token
     ],
 }
 
