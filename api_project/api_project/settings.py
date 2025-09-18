@@ -23,9 +23,35 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-1ty!r6jj)-zo(f-ktk3=zimx-y7ds!abo)4=mj$tbjwtp0&0tb'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True   # ⚡ True for local development, False in production
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "127.0.0.1",  # local dev
+    "localhost",  # local dev
+    # add your domain here in production
+]
+
+# --- Security Middleware Basics ---
+SECURE_BROWSER_XSS_FILTER = True        # Prevent XSS attacks
+X_FRAME_OPTIONS = "DENY"                # Prevent clickjacking
+SECURE_CONTENT_TYPE_NOSNIFF = True      # Prevent MIME-type sniffing
+
+# Trust proxy headers (used in production with reverse proxy / load balancer)
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# --- Conditional HTTPS rules ---
+if not DEBUG:  # Production only
+    CSRF_COOKIE_SECURE = True           # CSRF cookie only over HTTPS
+    SESSION_COOKIE_SECURE = True        # Session cookie only over HTTPS
+    SECURE_SSL_REDIRECT = True          # Redirect all HTTP -> HTTPS
+    SECURE_HSTS_SECONDS = 31536000      # Enforce HTTPS (1 year)
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+else:  # Development (plain HTTP)
+    CSRF_COOKIE_SECURE = False
+    SESSION_COOKIE_SECURE = False
+    SECURE_SSL_REDIRECT = False
+    SECURE_HSTS_SECONDS = 0
 
 
 # Application definition
