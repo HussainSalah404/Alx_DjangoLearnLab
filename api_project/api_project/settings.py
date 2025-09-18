@@ -64,8 +64,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',     # Messaging framework
     'django.contrib.staticfiles',  # Static files handling
     "api.apps.ApiConfig",          # Your custom app (api)
-    "rest_framework"               # Django REST Framework
+    "rest_framework",              # Django REST Framework
+    "rest_framework.authtoken"     # token auth
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',  # Token auth
+        'rest_framework.authentication.SessionAuthentication',  # optional
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',  # optional: force auth
+    ],
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
