@@ -18,7 +18,7 @@ class Book(models.Model):
     title = models.CharField(max_length=200)
 
     # Publication year of the book (stored as integer for simplicity).
-    published_date = models.IntegerField()
+    published_year = models.IntegerField()
 
     # ForeignKey creates a many-to-one relationship:
     # - Many books can belong to one Author.
