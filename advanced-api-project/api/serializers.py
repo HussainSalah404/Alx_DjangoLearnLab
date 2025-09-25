@@ -31,7 +31,8 @@ class AuthorSerializer(serializers.ModelSerializer):
     # - "read_only=True" so books cannot be created/edited via AuthorSerializer.
     # - "source='book_set'" tells DRF to use the reverse relationship
     #    automatically created by Django (author.book_set).
-    books = BookSerializer(many=True, read_only=True, source="book_set")
+    books = BookSerializer(many=True, read_only=True)
+    
 
     class Meta:
         model = Author
