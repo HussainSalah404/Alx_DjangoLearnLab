@@ -28,5 +28,5 @@ It demonstrates CRUD operations, role-based permissions, and advanced query capa
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/advanced_api_project.git
+   git clone https://github.com/HussainSalah404/Alx_DjangoLearnLab/tree/79352fc34f25d510a305c5d1947211e3416f1dc0/advanced-api-project
    cd advanced_api_project
