@@ -5,6 +5,7 @@ from .models import Book, Author
 
 
 class BookAPITestCase(APITestCase):
+    
     def setUp(self):
         # Create an Author instance to use in tests
         self.author = Author.objects.create(name="Author 1")
