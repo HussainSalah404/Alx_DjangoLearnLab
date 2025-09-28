@@ -6,6 +6,7 @@ from .models import Book, Author
 
 
 class BookAPITestCase(APITestCase):
+    
     def setUp(self):
         # Create a user for authentication
         self.user = User.objects.create_user(username="testuser", password="password123")
