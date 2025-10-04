@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block content %}
+<article>
+  <h1>{{ post.title }}</h1>
+  <p class="meta">By {{ post.author.username }} — {{ post.published_date|date:"F j, Y, g:i a" }}</p>
+  <div class="content">{{ post.content|linebreaks }}</div>
+
+  {% if user == post.author %}
+    <p>
+      <a href="{% url 'post-update' post.pk %}">Edit</a> |
+      <a href="{% url 'post-delete' post.pk %}">Delete</a>
+    </p>
+  {% endif %}
+
+  <p><a href="{% url 'post-list' %}">Back to posts</a></p>
+</article>
+{% endblock %}
+
+<!-- existing post detail markup above -->
+<section id="comments">
+  <h3>Comments ({{ post.comments.count }})</h3>
+
+  <!-- list comments -->
+  <ul class="comments-list">
+    {% for comment in post.comments.all %}
+      <li id="comment-{{ comment.pk }}">
+        <p class="meta"><strong>{{ comment.author.username }}</strong> • {{ comment.created_at|date:"F j, Y, g:i a" }}</p>
+        <div class="comment-content">{{ comment.content|linebreaks }}</div>
+
+        {% if user.is_authenticated and user == comment.author %}
+          <p class="comment-actions">
+            <a href="{% url 'comment-update' post.pk comment.pk %}">Edit</a> |
+            <a href="{% url 'comment-delete' post.pk comment.pk %}">Delete</a>
+          </p>
+        {% endif %}
+      </li>
+    {% empty %}
+      <li>No comments yet — be the first to comment.</li>
+    {% endfor %}
+  </ul>
+
+  <!-- add comment form (quick inline form) -->
+  {% if user.is_authenticated %}
+    <div class="comment-form">
+      <h4>Leave a comment</h4>
+      <form action="{% url 'comment-create' post.pk %}" method="post">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <button type="submit" class="btn">Post comment</button>
+      </form>
+    </div>
+  {% else %}
+    <p><a href="{% url 'login' %}?next={{ request.path }}">Log in</a> to leave a comment.</p>
+  {% endif %}
+</section>
+{% extends "base.html" %}
+{% block content %}
+  <h2>{{ object.title }}</h2>
+  <p>{{ object.content }}</p>
+  <small>Written by {{ object.author }}</small>
+
+  {% if user == object.author %}
+    <a href="{% url 'post-update' object.pk %}" class="btn btn-warning">Edit</a>
+    <a href="{% url 'post-delete' object.pk %}" class="btn btn-danger">Delete</a>
+  {% endif %}
+
+  <br>
+  <a href="{% url 'post-list' %}">← Back to all posts</a>
+{% endblock %}
+
+{% if post.tags.exists %}
+  <p>Tags:
+    {% for tag in post.tags.all %}
+      <a href="{% url 'posts-by-tag' tag.slug %}" class="tag">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+  </p>
+{% endif %}
+
