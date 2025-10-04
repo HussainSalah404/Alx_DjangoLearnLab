@@ -11,16 +11,20 @@ class UserRegisterForm(UserCreationForm):
         fields = ['username', 'email', 'password1', 'password2']
 
 
+
 class PostForm(forms.ModelForm):
+    tags = forms.CharField(
+        required=False,
+        help_text="Comma-separated tags",
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g. django, python'})
+    )
+
     class Meta:
         model = Post
         fields = ['title', 'content', 'tags']  # author and published_date are handled automatically
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
- # comma-separated tags input (e.g. "django, python, tips")
-        tags = forms.CharField(required=False, help_text="Comma-separated tags", widget=forms.TextInput(attrs={'placeholder': 'e.g. django, python'}))
-            'tags': TagWidget(),
         }
         
 class CommentForm(forms.ModelForm):
