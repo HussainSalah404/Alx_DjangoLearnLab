@@ -1,41 +1,67 @@
-## Authentication Features
-- **Register:** Users sign up with username, email, and password.
-- **Login/Logout:** Managed via Django’s built-in auth views.
-- **Profile:** Authenticated users can view and update email.
+# Django Blog Project
 
-### Running
-1. Ensure `blog` is in `INSTALLED_APPS`.
-2. Run `python manage.py migrate` to apply auth tables.
-3. Start the server: `python manage.py runserver`.
-4. Visit `/register` to create an account.
+A full-featured Django blog with user authentication, CRUD posts, comments, tagging, and search functionality.
 
-CSRF protection is enabled via `{% csrf_token %}`.
-Passwords are securely hashed using Django’s default PBKDF2.
+---
 
-## Blog Post Management
+## Table of Contents
 
-Routes:
-- GET /posts/           -> list all posts
-- GET /posts/new/       -> create (login required)
-- GET /posts/<pk>/      -> detail
-- GET /posts/<pk>/edit/ -> update (author only)
-- GET /posts/<pk>/delete/ -> delete (author only)
+1. [Project Overview](#project-overview)  
+2. [Features](#features)  
+3. [Installation](#installation)  
+4. [Usage](#usage)  
+5. [Project Structure](#project-structure)  
+6. [Implementation Details](#implementation-details)  
+7. [Contributing](#contributing)  
+8. [License](#license)  
 
-Permissions:
-- Anyone can view list/detail.
-- Only authenticated users can create posts.
-- Only the author (or staff) can edit/delete their posts.
+---
 
-To run:
-- migrate, create superuser, runserver
+## Project Overview
 
-## Comments
+A Django-based blogging platform where users can register, create posts, comment, add tags, and search posts.
 
-- Model: `Comment(post, author, content, created_at, updated_at)`
-- Create: POST to `/post/<post_pk>/comments/new/` — requires login.
-- Edit: GET/POST `/post/<post_pk>/comments/<comment_pk>/edit/` — only comment author.
-- Delete: GET/POST `/post/<post_pk>/comments/<comment_pk>/delete/` — only comment author.
+---
 
-Inline commenting: the post detail page displays comments and an inline form for logged-in users.
-To run tests:
-    python manage.py test blog
+## Features
+
+- User registration, login, logout, and profile management  
+- CRUD operations for posts  
+- Comment system with edit/delete for authors  
+- Tagging system for posts  
+- Search posts by title, content, or tags  
+- Permissions for authenticated users and authors  
+
+---
+
+## Installation
+
+1. Clone the repo:
+
+```bash
+git clone https://github.com/your-username/Alx_DjangoLearnLab.git
+cd Alx_DjangoLearnLab/django_blog
+Create a virtual environment:
+
+bash
+Copy code
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+venv\Scripts\activate     # Windows
+Install dependencies:
+
+bash
+Copy code
+pip install -r requirements.txt
+Apply migrations:
+
+bash
+Copy code
+python manage.py makemigrations
+python manage.py migrate
+Run the development server:
+
+bash
+Copy code
+python manage.py runserver
+Open http://127.0.0.1:8000/ in your browser.
