@@ -13,13 +13,17 @@ class UserRegisterForm(UserCreationForm):
 
 
 class PostForm(forms.ModelForm):
+    tags = forms.CharField(
+        required=False,
+        widget=TagWidget(attrs={'class': 'form-control', 'placeholder': 'e.g. django, python'})
+    )
+
     class Meta:
         model = Post
-        fields = ['title', 'content', 'tags']  # tags is ManyToManyField or TaggableManager
+        fields = ['title', 'content', 'tags']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
-            'tags': TagWidget(attrs={'class': 'form-control', 'placeholder': 'e.g. django, python'}),  # <-- TagWidget applied here
         }
 
 
