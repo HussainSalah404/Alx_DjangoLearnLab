@@ -13,19 +13,15 @@ class UserRegisterForm(UserCreationForm):
 
 
 class PostForm(forms.ModelForm):
-    tags = forms.CharField(
-        required=False,
-        help_text="Comma-separated tags",
-        widget=TagWidget(attrs={'class': 'form-control', 'placeholder': 'e.g. django, python'})
-    )
-
     class Meta:
         model = Post
-        fields = ['title', 'content', 'tags']
+        fields = ['title', 'content', 'tags']  # author and published_date are handled automatically
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
+            'tags': TagWidget(),
         }
+
         
 class CommentForm(forms.ModelForm):
     content = forms.CharField(
